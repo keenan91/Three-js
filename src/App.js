@@ -4,39 +4,26 @@ import {useEffect, useLayoutEffect} from 'react'
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader'
 import {MTLLoader} from 'three/examples/jsm/loaders/MTLLoader'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
-import OBJ from './head5.obj'
-import MTL from './head5.mtl'
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
+import OBJ from './goldenEyeLite.obj'
+import MTL from './goldenEyeLite.mtl'
+import GLB from './CCC.glb'
 
 const objLoader = new OBJLoader()
 const scene = new THREE.Scene()
 let Beet
-const mtlLoader = new MTLLoader()
-mtlLoader.load(
-  MTL,
-  (materials) => {
-    materials.preload()
 
-    const objLoader = new OBJLoader()
-    objLoader.setMaterials(materials)
-    objLoader.load(
-      OBJ,
-      (object) => {
-        Beet = object
-        scene.add(Beet)
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-      },
-      (error) => {
-        console.log('An error happened')
-      },
-    )
+const loader = new GLTFLoader()
+
+loader.load(
+  GLB,
+  function (gltf) {
+    Beet = gltf.scene
+    scene.add(Beet)
   },
-  (xhr) => {
-    console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-  },
-  (error) => {
-    console.log('An error happened')
+  undefined,
+  function (error) {
+    console.error(error)
   },
 )
 
@@ -53,7 +40,7 @@ function App() {
     })
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setSize(window.innerWidth, window.innerHeight)
-    camera.position.setZ(20)
+    camera.position.setZ(15)
     renderer.render(scene, camera)
 
     const geometry = new THREE.TorusGeometry(10, 3, 16, 100)
@@ -68,7 +55,7 @@ function App() {
     const pointLight2 = new THREE.PointLight(0xb85b14)
     pointLight.position.set(-5, 5, 10)
     pointLight2.position.set(30, 5, -50)
-    //const ambientLight = new THREE.AmbientLight(0xe6e6e6)
+    //const ambientLight = new THREE.AmbientLight(0xb85b14)
     //scene.add(ambientLight)
     scene.add(pointLight)
     scene.add(pointLight2)
