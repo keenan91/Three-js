@@ -315,7 +315,7 @@ function App() {
           mr="20px"
           onClick={previousHandler}
         >
-          Previous
+          Previouss
         </Button>
         <Button size="lg" variant="solid" colorScheme="green" mr="20px">
           Mint
